@@ -1,3 +1,28 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "restaurant1",
+      "description": "Elegant dining room with chandeliers",
+      "imageUrl": "https://images.unsplash.com/photo-1758977404304-30ff5f68753c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxlbGVnYW50JTIwZGluaW5nfGVufDB8fHx8MTc2NTMwMDE3M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "elegant dining"
+    },
+    {
+      "id": "restaurant2",
+      "description": "Plate of colorful Indian food",
+      "imageUrl": "https://images.unsplash.com/photo-1601050690597-df0568f70950?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxpbmRpYW4lMjBmb29kfGVufDB8fHx8MTc2NTMyNjg3OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "indian food"
+    },
+    {
+      "id": "restaurant3",
+      "description": "Bowl of fresh Italian pasta",
+      "imageUrl": "https://images.unsplash.com/photo-1662197480393-2a82030b7b83?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxpdGFsaWFuJTIwcGFzdGF8ZW58MHx8fHwxNzY1Mzg2MzE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "italian pasta"
+    },
+    {
+      "id": "restaurant4",
+      "description": "Assortment of Japanese sushi on a platter",
+      "imageUrl": "https://images.unsplash.com/photo-1736885978380-8d7d9f7d7880?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzdXNoaSUyMHBsYXR0ZXJ8ZW58MHx8fHwxNzY1Mjg2ODA3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sushi platter"
+    }
+  ]
 }

@@ -1,0 +1,90 @@
+'use client';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { CheckCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
+
+export default function ConfirmationPage() {
+  const [reservationId, setReservationId] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Generate ID on client to avoid hydration mismatch
+    setReservationId(
+      `DINE-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
+    );
+  }, []);
+
+  if (!reservationId) {
+    return (
+        <div className="container mx-auto max-w-lg px-4 sm:px-6 lg:px-8 py-20 text-center">
+            <Card className="shadow-2xl">
+                <CardHeader className="items-center">
+                    <Skeleton className="w-16 h-16 rounded-full mb-4" />
+                    <Skeleton className="h-8 w-3/4 mb-2" />
+                    <Skeleton className="h-4 w-full" />
+                </CardHeader>
+                <CardContent className="flex flex-col items-center space-y-6">
+                    <Skeleton className="w-[200px] h-[200px] rounded-lg" />
+                    <Skeleton className="h-8 w-1/2" />
+                </CardContent>
+                <CardFooter>
+                  <Skeleton className="h-10 w-full" />
+                </CardFooter>
+            </Card>
+        </div>
+    );
+  }
+  
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
+    `Reservation ID: ${reservationId}`
+  )}`;
+
+  return (
+    <div className="container mx-auto max-w-lg px-4 sm:px-6 lg:px-8 py-20 text-center">
+      <Card className="shadow-2xl animate-in fade-in-50 zoom-in-95">
+        <CardHeader className="items-center">
+          <CheckCircle className="w-16 h-16 text-green-500 mb-4" />
+          <CardTitle className="text-3xl font-headline">
+            Reservation Confirmed!
+          </CardTitle>
+          <CardDescription>
+            Your table is booked. Show this QR code at the restaurant.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center space-y-6">
+          <div className="p-4 bg-white rounded-lg">
+            <Image
+              src={qrCodeUrl}
+              alt="Reservation QR Code"
+              width={200}
+              height={200}
+              unoptimized
+            />
+          </div>
+          <p className="font-mono text-lg text-primary bg-primary/10 px-4 py-2 rounded-md">
+            {reservationId}
+          </p>
+          <p className="text-muted-foreground">
+            A confirmation email has been sent to your address. We look forward
+            to seeing you!
+          </p>
+        </CardContent>
+        <CardFooter>
+          <Button asChild className="w-full">
+            <Link href="/">Back to Home</Link>
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
+  );
+}
