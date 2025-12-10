@@ -89,6 +89,9 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
             className="rounded-md border"
             disabled={(day) => day < new Date(new Date().setHours(0, 0, 0, 0))}
             locale={fr}
+            captionLayout="dropdown-buttons"
+            fromYear={new Date().getFullYear()}
+            toYear={new Date().getFullYear() + 2}
           />
         </div>
 
