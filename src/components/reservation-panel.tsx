@@ -10,7 +10,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import {
   Select,
   SelectContent,
@@ -22,7 +21,7 @@ import { Label } from '@/components/ui/label';
 import type { Table } from '@/lib/types';
 import { Calendar as CalendarIcon, Clock, Users, Armchair } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 interface ReservationPanelProps {
@@ -31,11 +30,15 @@ interface ReservationPanelProps {
 
 export function ReservationPanel({ tables }: ReservationPanelProps) {
   const router = useRouter();
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date | undefined>();
   const [time, setTime] = useState<string>('');
   const [partySize, setPartySize] = useState<string>('');
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
 
+  const handleDateChange = (value: string) => {
+    setDate(new Date(value));
+  };
+  
   const handlePartySizeChange = (value: string) => {
     setPartySize(value);
     setSelectedTable(null); // Reset table selection when party size changes
@@ -69,6 +72,8 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
     );
     router.push('/checkout');
   };
+  
+  const upcomingDays = Array.from({ length: 14 }, (_, i) => addDays(new Date(), i));
 
   return (
     <Card className="sticky top-24 shadow-lg">
@@ -79,20 +84,21 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="date" className="flex items-center gap-2">
+          <Label htmlFor="date-select" className="flex items-center gap-2">
             <CalendarIcon /> Choisir la date
           </Label>
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            className="rounded-md border"
-            disabled={(day) => day < new Date(new Date().setHours(0, 0, 0, 0))}
-            locale={fr}
-            captionLayout="dropdown-buttons"
-            fromYear={new Date().getFullYear()}
-            toYear={new Date().getFullYear() + 2}
-          />
+          <Select onValueChange={handleDateChange} value={date?.toISOString()}>
+            <SelectTrigger id="date-select">
+              <SelectValue placeholder="Sélectionner une date" />
+            </SelectTrigger>
+            <SelectContent>
+              {upcomingDays.map((day) => (
+                <SelectItem key={day.toISOString()} value={day.toISOString()}>
+                  {format(day, 'eeee dd MMMM', { locale: fr })}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
