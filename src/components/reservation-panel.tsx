@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Card,
@@ -21,7 +21,7 @@ import { Label } from '@/components/ui/label';
 import type { Table } from '@/lib/types';
 import { Calendar as CalendarIcon, Clock, Users, Armchair } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
-import { format, addDays } from 'date-fns';
+import { format, getDaysInMonth, getYear, getMonth, getDate, set } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 interface ReservationPanelProps {
@@ -35,8 +35,43 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
   const [partySize, setPartySize] = useState<string>('');
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
 
-  const handleDateChange = (value: string) => {
-    setDate(new Date(value));
+  const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth());
+  const [selectedDay, setSelectedDay] = useState<number | undefined>();
+
+  const currentYear = getYear(new Date());
+  
+  const months = useMemo(() => {
+    const monthArray = [];
+    const today = new Date();
+    for (let i = 0; i < 12; i++) {
+        const monthDate = set(today, { month: i });
+        monthArray.push({
+            value: getMonth(monthDate),
+            label: format(monthDate, 'MMMM', { locale: fr }),
+        });
+    }
+    return monthArray;
+  }, []);
+
+  const daysInSelectedMonth = useMemo(() => {
+    return getDaysInMonth(new Date(currentYear, selectedMonth));
+  }, [currentYear, selectedMonth]);
+
+  useEffect(() => {
+    if (selectedDay !== undefined) {
+      const newDate = new Date(currentYear, selectedMonth, selectedDay);
+      setDate(newDate);
+    }
+  }, [selectedMonth, selectedDay, currentYear]);
+
+  const handleMonthChange = (value: string) => {
+    setSelectedMonth(parseInt(value));
+    setSelectedDay(undefined); // Reset day when month changes
+    setDate(undefined);
+  };
+
+  const handleDayChange = (value: string) => {
+    setSelectedDay(parseInt(value));
   };
   
   const handlePartySizeChange = (value: string) => {
@@ -58,8 +93,6 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
       });
       return;
     }
-    // In a real app, we'd save this to a DB and go to checkout with a reservation ID.
-    // For now, we'll just navigate to a generic checkout page.
     localStorage.setItem(
       'reservationDetails',
       JSON.stringify({
@@ -73,8 +106,6 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
     router.push('/checkout');
   };
   
-  const upcomingDays = Array.from({ length: 14 }, (_, i) => addDays(new Date(), i));
-
   return (
     <Card className="sticky top-24 shadow-lg">
       <CardHeader>
@@ -84,21 +115,38 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="date-select" className="flex items-center gap-2">
+          <Label className="flex items-center gap-2">
             <CalendarIcon /> Choisir la date
           </Label>
-          <Select onValueChange={handleDateChange} value={date?.toISOString()}>
-            <SelectTrigger id="date-select">
-              <SelectValue placeholder="Sélectionner une date" />
-            </SelectTrigger>
-            <SelectContent>
-              {upcomingDays.map((day) => (
-                <SelectItem key={day.toISOString()} value={day.toISOString()}>
-                  {format(day, 'eeee dd MMMM', { locale: fr })}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="grid grid-cols-2 gap-4">
+             <Select onValueChange={handleMonthChange} value={String(selectedMonth)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Mois" />
+                </SelectTrigger>
+                <SelectContent>
+                  {months.map((month) => (
+                    <SelectItem key={month.value} value={String(month.value)}>
+                      {month.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+             <Select onValueChange={handleDayChange} value={selectedDay ? String(selectedDay) : ''} disabled={selectedMonth === undefined}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Jour" />
+                </SelectTrigger>
+                <SelectContent>
+                  {[...Array(daysInSelectedMonth)].map((_, i) => {
+                      const day = i + 1;
+                      return (
+                          <SelectItem key={day} value={String(day)}>
+                              {day}
+                          </SelectItem>
+                      )
+                  })}
+                </SelectContent>
+              </Select>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
