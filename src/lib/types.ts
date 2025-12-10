@@ -21,6 +21,10 @@ export interface Restaurant {
   imageUrl: string;
   imageHint: string;
   address: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
   description: string;
   menu: MenuItem[];
   tables: Table[];

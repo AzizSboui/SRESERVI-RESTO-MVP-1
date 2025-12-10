@@ -5,6 +5,7 @@ import { Star, MapPin } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { ReservationPanel } from '@/components/reservation-panel';
 import { MenuSection } from '@/components/menu-section';
+import { Map } from '@/components/map';
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const restaurant = getRestaurantById(params.id);
@@ -49,11 +50,7 @@ export default function RestaurantPage({ params }: { params: { id: string } }) {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           <div className="lg:col-span-2">
-            <div className="prose prose-lg dark:prose-invert max-w-none text-foreground/90">
-              <p>{restaurant.description}</p>
-            </div>
-            <Separator className="my-8" />
-            <div className="flex flex-wrap gap-x-6 gap-y-4 text-md text-muted-foreground mb-8">
+            <div className="flex flex-wrap gap-x-6 gap-y-4 text-md text-muted-foreground mb-4">
               <div className="flex items-center gap-2">
                 <Star className="w-5 h-5 text-accent fill-accent" />
                 <span>
@@ -65,6 +62,18 @@ export default function RestaurantPage({ params }: { params: { id: string } }) {
                 <span>{restaurant.address}</span>
               </div>
             </div>
+             <div className="prose prose-lg dark:prose-invert max-w-none text-foreground/90 mb-8">
+              <p>{restaurant.description}</p>
+            </div>
+            
+            <Separator className="my-8" />
+
+            <h2 className="text-3xl font-bold font-headline mb-6">Emplacement</h2>
+            <div className="mb-8">
+              <Map center={restaurant.location} />
+            </div>
+
+            <Separator className="my-8" />
 
             <MenuSection menu={restaurant.menu} />
           </div>

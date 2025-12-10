@@ -9,7 +9,11 @@ export const restaurants: Restaurant[] = [
     reviewCount: 250,
     imageUrl: 'https://picsum.photos/seed/restaurant1/600/400',
     imageHint: 'elegant dining',
-    address: '123 Rue du Luxe, Métropole',
+    address: '12 Avenue Habib Bourguiba, Tunis',
+    location: {
+      lat: 36.8008,
+      lng: 10.1815,
+    },
     description:
       "Une expérience culinaire exquise mettant en vedette les meilleurs ingrédients de saison, organisée par notre chef de renommée mondiale. La Cuillère Dorée offre un voyage pour vos papilles dans un cadre d'une élégance inégalée.",
     menu: [
@@ -50,7 +54,11 @@ export const restaurants: Restaurant[] = [
     reviewCount: 412,
     imageUrl: 'https://picsum.photos/seed/restaurant2/600/400',
     imageHint: 'indian food',
-    address: '456 Route des Épices, Métropole',
+    address: '45 Rue de la Kasbah, Tunis',
+    location: {
+      lat: 36.805,
+      lng: 10.178,
+    },
     description:
       "Explorez les saveurs vibrantes de l'Inde à Épices de Safran. Notre menu est une riche tapisserie de plats traditionnels et de créations contemporaines, tous préparés avec des épices authentiques et des techniques ancestrales.",
     menu: [
@@ -91,7 +99,11 @@ export const restaurants: Restaurant[] = [
     reviewCount: 320,
     imageUrl: 'https://picsum.photos/seed/restaurant3/600/400',
     imageHint: 'italian pasta',
-    address: '789 Rue des Oliviers, Métropole',
+    address: 'Rue du Lac Leman, Les Berges du Lac, Tunis',
+    location: {
+      lat: 36.843,
+      lng: 10.243,
+    },
     description:
       "Un coin d'Italie confortable au cœur de la ville. Le Bistro Verde sert une cuisine italienne réconfortante classique, des pâtes faites maison aux pizzas cuites au feu de bois, dans une atmosphère chaleureuse et accueillante.",
     menu: [
@@ -132,7 +144,11 @@ export const restaurants: Restaurant[] = [
     reviewCount: 550,
     imageUrl: 'https://picsum.photos/seed/restaurant4/600/400',
     imageHint: 'sushi platter',
-    address: '101 Boulevard Sakura, Métropole',
+    address: 'Avenue Mohammed V, Tunis',
+    location: {
+      lat: 36.818,
+      lng: 10.18,
+    },
     description:
       "Découvrez l'art du sushi à Tokyo Table. Nos maîtres sushi n'utilisent que le poisson le plus frais, provenant du marché quotidien, pour créer des rouleaux traditionnels et innovants qui raviront vos sens.",
     menu: [
@@ -160,7 +176,7 @@ export const restaurants: Restaurant[] = [
     ],
     tables: [
       { id: 't4-1', seats: 2, isAvailable: true },
-      { id: 't4-2', seats: 2, isAvailable: true },
+      { id 't4-2', seats: 2, isAvailable: true },
       { id: 't4-3', seats: 4, isAvailable: true },
       { id: 't4-4', seats: 4, isAvailable: false },
     ],
