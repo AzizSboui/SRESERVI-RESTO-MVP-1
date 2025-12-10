@@ -42,7 +42,7 @@ export function MenuSection({ menu }: MenuSectionProps) {
                       <CardTitle className="text-lg flex justify-between items-baseline">
                         <span>{item.name}</span>
                         <span className="text-base font-sans font-bold text-accent">
-                          ${item.price.toFixed(2)}
+                          {item.price.toFixed(2)} TND
                         </span>
                       </CardTitle>
                     </CardHeader>

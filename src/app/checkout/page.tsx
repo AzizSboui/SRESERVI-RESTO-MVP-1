@@ -112,7 +112,7 @@ export default function CheckoutPage() {
             <Separator />
             <div className="flex justify-between text-lg">
               <span className="font-semibold">Frais de réservation:</span>
-              <span className="font-bold text-primary">5 €</span>
+              <span className="font-bold text-primary">15 TND</span>
             </div>
           </CardContent>
         </Card>
