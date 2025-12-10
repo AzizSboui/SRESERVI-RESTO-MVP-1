@@ -43,7 +43,7 @@ export default function CheckoutPage() {
     }, 2000);
   };
 
-  if (isLoading) {
+  if (isLoading || !reservationDetails) {
     return (
       <div className="container mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 py-12">
         <Skeleton className="h-10 w-3/4 mx-auto mb-8" />
@@ -112,7 +112,7 @@ export default function CheckoutPage() {
             <Separator />
             <div className="flex justify-between text-lg">
               <span className="font-semibold">Frais de réservation:</span>
-              <span className="font-bold text-primary">$10.00</span>
+              <span className="font-bold text-primary">5 €</span>
             </div>
           </CardContent>
         </Card>
