@@ -19,10 +19,12 @@ const mapContainerStyle = {
 export function Map({ center }: MapProps) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
-  if (!apiKey) {
+  if (!apiKey || apiKey === 'VOTRE_CLÉ_API_ICI') {
     return (
       <div className="h-[300px] w-full flex items-center justify-center bg-muted rounded-lg">
-        <p className="text-muted-foreground">Clé API Google Maps manquante.</p>
+        <p className="text-muted-foreground text-center p-4">
+          Clé API Google Maps manquante. Veuillez l'ajouter dans le fichier .env et redémarrer le serveur.
+        </p>
       </div>
     );
   }
