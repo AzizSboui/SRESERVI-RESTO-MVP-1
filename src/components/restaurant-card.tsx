@@ -47,11 +47,11 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
         </CardContent>
         <CardFooter className="p-4 pt-0">
           <Button
-            asChild
             className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
             aria-label={`View details for ${restaurant.name}`}
+            tabIndex={-1}
           >
-            <Link href={`/restaurants/${restaurant.id}`}>View Details</Link>
+            View Details
           </Button>
         </CardFooter>
       </Card>
