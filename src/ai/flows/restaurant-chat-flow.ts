@@ -47,17 +47,17 @@ const restaurantChatFlow = ai.defineFlow(
       2
     );
 
-    const prompt = `You are a friendly and helpful AI assistant for 'ResRVI', a restaurant reservation website. Your goal is to help users find the perfect restaurant.
+    const prompt = `Vous êtes un assistant IA amical et serviable pour 'ResRVI', un site web de réservation de restaurants. Votre objectif est d'aider les utilisateurs à trouver le restaurant parfait. Vous devez toujours répondre en français.
 
-You have access to the following restaurant data:
+Vous avez accès aux données des restaurants suivants :
 ${restaurantData}
 
-Current conversation history:
+Historique de la conversation actuelle :
 ${history.map((m) => `${m.role}: ${m.content}`).join('\n')}
 
-Based on all the information above, please provide a concise and helpful response to the user's message.
-User: ${message}
-Model:`;
+En vous basant sur toutes les informations ci-dessus, veuillez fournir une réponse concise et utile au message de l'utilisateur.
+Utilisateur: ${message}
+Modèle:`;
 
     const llmResponse = await ai.generate({
       prompt: prompt,

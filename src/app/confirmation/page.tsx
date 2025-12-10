@@ -55,17 +55,17 @@ export default function ConfirmationPage() {
         <CardHeader className="items-center">
           <CheckCircle className="w-16 h-16 text-green-500 mb-4" />
           <CardTitle className="text-3xl font-headline">
-            Reservation Confirmed!
+            Réservation Confirmée !
           </CardTitle>
           <CardDescription>
-            Your table is booked. Show this QR code at the restaurant.
+            Votre table est réservée. Présentez ce code QR au restaurant.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center space-y-6">
           <div className="p-4 bg-white rounded-lg">
             <Image
               src={qrCodeUrl}
-              alt="Reservation QR Code"
+              alt="QR Code de réservation"
               width={200}
               height={200}
               unoptimized
@@ -75,13 +75,12 @@ export default function ConfirmationPage() {
             {reservationId}
           </p>
           <p className="text-muted-foreground">
-            A confirmation email has been sent to your address. We look forward
-            to seeing you!
+            Un e-mail de confirmation a été envoyé à votre adresse. Nous avons hâte de vous voir !
           </p>
         </CardContent>
         <CardFooter>
           <Button asChild className="w-full">
-            <Link href="/">Back to Home</Link>
+            <Link href="/">Retour à l'accueil</Link>
           </Button>
         </CardFooter>
       </Card>

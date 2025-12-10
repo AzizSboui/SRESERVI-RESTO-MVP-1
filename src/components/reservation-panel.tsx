@@ -23,6 +23,7 @@ import type { Table } from '@/lib/types';
 import { Calendar as CalendarIcon, Clock, Users, Armchair } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 interface ReservationPanelProps {
   tables: Table[];
@@ -48,8 +49,8 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
   const handleReservation = () => {
     if (!date || !time || !partySize || !selectedTable) {
       toast({
-        title: 'Incomplete Reservation',
-        description: 'Please select a date, time, party size, and table.',
+        title: 'Réservation incomplète',
+        description: 'Veuillez sélectionner une date, une heure, un nombre de personnes et une table.',
         variant: 'destructive',
       });
       return;
@@ -59,7 +60,7 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
     localStorage.setItem(
       'reservationDetails',
       JSON.stringify({
-        date: format(date, 'PPP'),
+        date: format(date, 'PPP', { locale: fr }),
         time,
         partySize,
         tableId: selectedTable.id,
@@ -73,13 +74,13 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
     <Card className="sticky top-24 shadow-lg">
       <CardHeader>
         <CardTitle className="font-headline text-2xl">
-          Make a Reservation
+          Faire une réservation
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
           <Label htmlFor="date" className="flex items-center gap-2">
-            <CalendarIcon /> Select Date
+            <CalendarIcon /> Choisir la date
           </Label>
           <Calendar
             mode="single"
@@ -87,17 +88,18 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
             onSelect={setDate}
             className="rounded-md border"
             disabled={(day) => day < new Date(new Date().setHours(0, 0, 0, 0))}
+            locale={fr}
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="time" className="flex items-center gap-2">
-              <Clock /> Time
+              <Clock /> Heure
             </Label>
             <Select onValueChange={setTime} value={time}>
               <SelectTrigger id="time">
-                <SelectValue placeholder="Select time" />
+                <SelectValue placeholder="Choisir l'heure" />
               </SelectTrigger>
               <SelectContent>
                 {['18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'].map(
@@ -112,16 +114,16 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
           </div>
           <div className="space-y-2">
             <Label htmlFor="party-size" className="flex items-center gap-2">
-              <Users /> Party Size
+              <Users /> Personnes
             </Label>
             <Select onValueChange={handlePartySizeChange} value={partySize}>
               <SelectTrigger id="party-size">
-                <SelectValue placeholder="Select size" />
+                <SelectValue placeholder="Nombre" />
               </SelectTrigger>
               <SelectContent>
                 {[...Array(8)].map((_, i) => (
                   <SelectItem key={i + 1} value={`${i + 1}`}>
-                    {i + 1} person{i > 0 ? 's' : ''}
+                    {i + 1} personne{i > 0 ? 's' : ''}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -131,7 +133,7 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
 
         <div className="space-y-2">
           <Label className="flex items-center gap-2">
-            <Armchair /> Choose a Table
+            <Armchair /> Choisir une table
           </Label>
           <div className="grid grid-cols-3 gap-2">
             {availableTables.map((table) => (
@@ -144,13 +146,13 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
               >
                 <span>Table {table.id.split('-')[1]}</span>
                 <span className="text-xs text-muted-foreground">
-                  {table.seats} seats
+                  {table.seats} places
                 </span>
               </Button>
             ))}
             {partySize && availableTables.length === 0 && (
               <p className="col-span-3 text-sm text-muted-foreground p-4 text-center border rounded-md">
-                No available tables for the selected party size.
+                Aucune table disponible pour ce nombre de personnes.
               </p>
             )}
           </div>
@@ -161,7 +163,7 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
           onClick={handleReservation}
           className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
         >
-          Proceed to Payment
+          Procéder au paiement
         </Button>
       </CardFooter>
     </Card>

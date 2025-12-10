@@ -13,10 +13,10 @@ interface MenuSectionProps {
 
 export function MenuSection({ menu }: MenuSectionProps) {
   const categories = [
-    'Appetizer',
-    'Main Course',
-    'Dessert',
-    'Beverage',
+    { key: 'Appetizer', name: 'Entrées' },
+    { key: 'Main Course', name: 'Plats principaux' },
+    { key: 'Dessert', name: 'Desserts' },
+    { key: 'Beverage', name: 'Boissons' },
   ] as const;
 
   return (
@@ -27,13 +27,13 @@ export function MenuSection({ menu }: MenuSectionProps) {
       </h2>
       <div className="space-y-8">
         {categories.map((category) => {
-          const items = menu.filter((item) => item.category === category);
+          const items = menu.filter((item) => item.category === category.key);
           if (items.length === 0) return null;
 
           return (
-            <div key={category}>
+            <div key={category.key}>
               <h3 className="text-2xl font-headline font-semibold mb-4 text-primary/90">
-                {category}s
+                {category.name}
               </h3>
               <div className="grid gap-4 md:grid-cols-2">
                 {items.map((item) => (

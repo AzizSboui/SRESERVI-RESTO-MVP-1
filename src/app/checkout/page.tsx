@@ -81,12 +81,12 @@ export default function CheckoutPage() {
   return (
     <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12">
       <h1 className="text-4xl font-bold font-headline text-center mb-8">
-        Confirm Your Reservation
+        Confirmez votre réservation
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         <Card>
           <CardHeader>
-            <CardTitle>Reservation Summary</CardTitle>
+            <CardTitle>Résumé de la réservation</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
             <div className="flex justify-between">
@@ -94,13 +94,13 @@ export default function CheckoutPage() {
               <span className="font-medium">{reservationDetails.date}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Time:</span>
+              <span className="text-muted-foreground">Heure:</span>
               <span className="font-medium">{reservationDetails.time}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Party Size:</span>
+              <span className="text-muted-foreground">Nombre de personnes:</span>
               <span className="font-medium">
-                {reservationDetails.partySize} guests
+                {reservationDetails.partySize} personnes
               </span>
             </div>
             <div className="flex justify-between">
@@ -111,7 +111,7 @@ export default function CheckoutPage() {
             </div>
             <Separator />
             <div className="flex justify-between text-lg">
-              <span className="font-semibold">Reservation Fee:</span>
+              <span className="font-semibold">Frais de réservation:</span>
               <span className="font-bold text-primary">$10.00</span>
             </div>
           </CardContent>
@@ -120,14 +120,14 @@ export default function CheckoutPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <CreditCard /> Payment Details
+              <CreditCard /> Détails de paiement
             </CardTitle>
-            <CardDescription>A small fee to secure your table.</CardDescription>
+            <CardDescription>Un petit frais pour sécuriser votre table.</CardDescription>
           </CardHeader>
           <form onSubmit={handlePayment}>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="card-number">Card Number</Label>
+                <Label htmlFor="card-number">Numéro de carte</Label>
                 <Input
                   id="card-number"
                   placeholder="•••• •••• •••• ••••"
@@ -136,8 +136,8 @@ export default function CheckoutPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="expiry">Expiry</Label>
-                  <Input id="expiry" placeholder="MM/YY" required />
+                  <Label htmlFor="expiry">Expiration</Label>
+                  <Input id="expiry" placeholder="MM/AA" required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="cvc">CVC</Label>
@@ -154,10 +154,10 @@ export default function CheckoutPage() {
                 {isProcessing && (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}
-                {isProcessing ? 'Processing...' : 'Pay & Confirm'}
+                {isProcessing ? 'Traitement...' : 'Payer et Confirmer'}
               </Button>
               <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
-                <Lock className="w-3 h-3" /> Secure Payment
+                <Lock className="w-3 h-3" /> Paiement sécurisé
               </p>
             </CardFooter>
           </form>

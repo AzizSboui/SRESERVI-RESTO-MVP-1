@@ -42,16 +42,16 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
             <Star className="w-4 h-4 mr-1 text-accent fill-accent" />
             <span>{restaurant.rating}</span>
             <span className="mx-1">·</span>
-            <span>({restaurant.reviewCount} reviews)</span>
+            <span>({restaurant.reviewCount} avis)</span>
           </div>
         </CardContent>
         <CardFooter className="p-4 pt-0">
           <Button
             className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
-            aria-label={`View details for ${restaurant.name}`}
+            aria-label={`Voir les détails pour ${restaurant.name}`}
             tabIndex={-1}
           >
-            View Details
+            Voir les détails
           </Button>
         </CardFooter>
       </Card>

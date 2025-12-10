@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   const restaurant = getRestaurantById(params.id);
   if (!restaurant) {
     return {
-      title: 'Restaurant Not Found',
+      title: 'Restaurant non trouvé',
     };
   }
   return {
@@ -57,7 +57,7 @@ export default function RestaurantPage({ params }: { params: { id: string } }) {
               <div className="flex items-center gap-2">
                 <Star className="w-5 h-5 text-accent fill-accent" />
                 <span>
-                  {restaurant.rating} ({restaurant.reviewCount} reviews)
+                  {restaurant.rating} ({restaurant.reviewCount} avis)
                 </span>
               </div>
               <div className="flex items-center gap-2">

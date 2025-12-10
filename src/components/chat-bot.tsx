@@ -41,7 +41,7 @@ export function ChatBot() {
       console.error('Error getting AI response:', error);
       const errorMessage: ChatMessage = {
         role: 'model',
-        content: 'Sorry, I am having trouble connecting. Please try again later.',
+        content: 'Désolé, je rencontre des difficultés pour me connecter. Veuillez réessayer plus tard.',
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
@@ -73,8 +73,8 @@ export function ChatBot() {
           <CardHeader className="flex flex-row items-center gap-3">
             <Bot className="w-8 h-8 text-primary" />
             <div>
-                <CardTitle className="font-headline">ResRVI Assistant</CardTitle>
-                <CardDescription>How can I help you today?</CardDescription>
+                <CardTitle className="font-headline">Assistant ResRVI</CardTitle>
+                <CardDescription>Comment puis-je vous aider ?</CardDescription>
             </div>
           </CardHeader>
           <CardContent className="flex-grow overflow-hidden">
@@ -119,7 +119,7 @@ export function ChatBot() {
           <CardFooter className="pt-4 border-t">
             <div className="relative w-full">
               <Input
-                placeholder="Ask about restaurants..."
+                placeholder="Posez une question sur les restaurants..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
