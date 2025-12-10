@@ -176,7 +176,7 @@ export const restaurants: Restaurant[] = [
     ],
     tables: [
       { id: 't4-1', seats: 2, isAvailable: true },
-      { id 't4-2', seats: 2, isAvailable: true },
+      { id: 't4-2', seats: 2, isAvailable: true },
       { id: 't4-3', seats: 4, isAvailable: true },
       { id: 't4-4', seats: 4, isAvailable: false },
     ],
