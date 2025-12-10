@@ -6,7 +6,7 @@ import Footer from '@/components/footer';
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'DineEase',
+  title: 'ResRVI',
   description: 'Reserve your table with ease.',
 };
 

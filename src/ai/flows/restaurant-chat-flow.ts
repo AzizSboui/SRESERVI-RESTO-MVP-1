@@ -47,7 +47,7 @@ const restaurantChatFlow = ai.defineFlow(
       2
     );
 
-    const prompt = `You are a friendly and helpful AI assistant for 'DineEase', a restaurant reservation website. Your goal is to help users find the perfect restaurant.
+    const prompt = `You are a friendly and helpful AI assistant for 'ResRVI', a restaurant reservation website. Your goal is to help users find the perfect restaurant.
 
 You have access to the following restaurant data:
 ${restaurantData}

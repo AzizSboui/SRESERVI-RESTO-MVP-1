@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     };
   }
   return {
-    title: `${restaurant.name} - DineEase`,
+    title: `${restaurant.name} - ResRVI`,
     description: restaurant.description,
   };
 }

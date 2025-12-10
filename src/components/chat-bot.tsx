@@ -73,7 +73,7 @@ export function ChatBot() {
           <CardHeader className="flex flex-row items-center gap-3">
             <Bot className="w-8 h-8 text-primary" />
             <div>
-                <CardTitle className="font-headline">DineEase Assistant</CardTitle>
+                <CardTitle className="font-headline">ResRVI Assistant</CardTitle>
                 <CardDescription>How can I help you today?</CardDescription>
             </div>
           </CardHeader>
