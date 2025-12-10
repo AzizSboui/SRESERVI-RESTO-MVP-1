@@ -163,7 +163,7 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
           onClick={handleReservation}
           className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
         >
-          Procéder au paiement
+          Voir le résumé
         </Button>
       </CardFooter>
     </Card>
