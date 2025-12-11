@@ -187,8 +187,8 @@ export const restaurants: Restaurant[] = [
     cuisine: 'Américain & Pizza',
     rating: 4.5,
     reviewCount: 180,
-    imageUrl: 'https://picsum.photos/seed/restaurant5/600/400',
-    imageHint: 'pizza burger',
+    imageUrl: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&q=80',
+    imageHint: 'pizza',
     address: '10 Rue de la Liberté, Tunis',
     location: {
       lat: 36.8028,
