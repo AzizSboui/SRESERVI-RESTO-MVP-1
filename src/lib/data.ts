@@ -181,6 +181,58 @@ export const restaurants: Restaurant[] = [
       { id: 't4-4', seats: 4, isAvailable: false },
     ],
   },
+  {
+    id: '5',
+    name: 'Le Festin Gourmand',
+    cuisine: 'Américain & Pizza',
+    rating: 4.5,
+    reviewCount: 180,
+    imageUrl: 'https://picsum.photos/seed/restaurant5/600/400',
+    imageHint: 'pizza burger',
+    address: '10 Rue de la Liberté, Tunis',
+    location: {
+      lat: 36.8028,
+      lng: 10.1798,
+    },
+    description:
+      "Le Festin Gourmand est l'endroit idéal pour savourer le meilleur de la cuisine américaine et italienne. Des burgers juteux, des pizzas croustillantes et des sandwichs généreux vous attendent dans une ambiance décontractée et conviviale.",
+    menu: [
+      {
+        id: 'm5-1',
+        name: 'Burger Classique',
+        description: 'Steak haché, cheddar, laitue, tomate, oignons et sauce spéciale.',
+        price: 48,
+        category: 'Main Course',
+      },
+      {
+        id: 'm5-2',
+        name: 'Pizza Margherita',
+        description: 'Sauce tomate, mozzarella fraîche et basilic.',
+        price: 42,
+        category: 'Main Course',
+      },
+      {
+        id: 'm5-3',
+        name: 'Club Sandwich',
+        description: 'Poulet grillé, bacon, laitue, tomate et mayonnaise.',
+        price: 51,
+        category: 'Main Course',
+      },
+      {
+        id: 'm5-4',
+        name: 'Fondant au chocolat',
+        description: 'Cœur coulant au chocolat servi avec une boule de glace vanille.',
+        price: 30,
+        category: 'Dessert',
+      },
+    ],
+    tables: [
+      { id: 't5-1', seats: 2, isAvailable: true },
+      { id: 't5-2', seats: 4, isAvailable: true },
+      { id: 't5-3', seats: 4, isAvailable: true },
+      { id: 't5-4', seats: 6, isAvailable: false },
+    ],
+  },
 ];
 
 export const getRestaurantById = (id: string | number) => {

@@ -23,6 +23,12 @@
       "description": "Assortment of Japanese sushi on a platter",
       "imageUrl": "https://images.unsplash.com/photo-1736885978380-8d7d9f7d7880?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzdXNoaSUyMHBsYXR0ZXJ8ZW58MHx8fHwxNzY1Mjg2ODA3fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "sushi platter"
+    },
+    {
+      "id": "restaurant5",
+      "description": "Delicious pizza and burger meal",
+      "imageUrl": "https://images.unsplash.com/photo-1604382354936-07c5d9983d34?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwaXp6YSUyMGJ1cmdlcnxlbnwwfHx8fDE3NjUzODg0ODd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "pizza burger"
     }
   ]
 }
