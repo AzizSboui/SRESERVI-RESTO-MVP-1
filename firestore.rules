@@ -1,0 +1,185 @@
+/**
+ * Core Philosophy: This ruleset implements a dual-access security model. Restaurant-related
+ * data (restaurants, menus, tables) is publicly readable to allow for app discovery features.
+ * All write access to this public data is currently disabled pending the implementation of a
+ * restaurant ownership/admin role. In contrast, user-specific data (profiles, reservations)
+ * is strictly private, following a path-based ownership model where only the authenticated
+ * user can access their own information.
+ *
+ * Data Structure: The data is organized into two primary top-level collections:
+ * 1. /restaurants/{restaurantId}: Contains public restaurant information, with subcollections for
+ *    'menuItems' and 'tables'.
+ * 2. /users/{userId}: A private collection where each user's document and their subcollections
+ *    (like 'reservations') are stored.
+ *
+ * Key Security Decisions:
+ * - Public Read, No Write: The '/restaurants' collection and its subcollections are readable by anyone,
+ *   including unauthenticated users. Writes are disabled ('allow write: if false;') as a secure
+ *   default because the data model lacks an 'ownerId' or admin role on restaurants. A TODO has
+ *   been added to flag this for future implementation.
+ * - Strict User Ownership: All data under '/users/{userId}' is accessible only by the user
+ *   whose UID matches the '{userId}' in the path. This prevents users from accessing each
+ *   other's private information.
+ * - User Enumeration Disabled: Listing documents in the top-level '/users' collection is
+ *   explicitly forbidden to protect user privacy and prevent scraping of user IDs.
+ *
+ * Denormalization for Authorization: The rules rely on denormalized fields to perform fast,
+ * efficient, and secure authorization checks without using costly 'get()' calls. For example, a
+ * Reservation document under '/users/{userId}/reservations' must contain a 'userId' field that
+ * matches the path parameter. This relational link is validated on create and enforced as immutable
+ * on update.
+ *
+ * Structural Segregation: The design correctly separates public data (/restaurants) from private
+ * user data (/users/{userId}/reservations) into different collections. This is a best practice that
+ * simplifies list queries and enhances security by preventing accidental exposure of private data.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ------------------------------------------------------------------------
+    // Helper Functions
+    // ------------------------------------------------------------------------
+
+    /**
+     * Checks if the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Checks if the currently authenticated user's UID matches the provided userId.
+     * This is the foundation of the user-ownership security model.
+     * @param userId The user ID to check against the request's auth UID.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * Checks for ownership on an existing document. Used for update and delete
+     * operations to prevent acting on non-existent data.
+     * @param userId The user ID to check for ownership.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    /**
+     * Validates relational data for a new User document.
+     * Ensures the document's internal ID matches the document ID in the path.
+     * This is critical for maintaining data integrity and consistent authorization.
+     */
+    function hasValidUserDataOnCreate(userId) {
+      return request.resource.data.id == userId;
+    }
+
+    /**
+     * Enforces immutability for critical relational fields on a User document update.
+     * The user's own ID ('id') must never be changed after creation.
+     */
+    function hasImmutableUserDataOnUpdate() {
+      return request.resource.data.id == resource.data.id;
+    }
+
+    /**
+     * Validates relational data for a new Reservation document.
+     * Ensures the internal 'userId' field matches the user's ID from the path.
+     */
+    function hasValidReservationDataOnCreate(userId) {
+      return request.resource.data.userId == userId;
+    }
+
+    /**
+     * Enforces immutability for the 'userId' field on a Reservation document update.
+     * This prevents a reservation from being reassigned to another user.
+     */
+    function hasImmutableReservationDataOnUpdate() {
+      return request.resource.data.userId == resource.data.userId;
+    }
+
+    // ------------------------------------------------------------------------
+    // Collection Rules
+    // ------------------------------------------------------------------------
+
+    /**
+     * @description Stores public restaurant details. Anyone can read, but no one can write.
+     * @path /restaurants/{restaurantId}
+     * @allow (get) Any user, signed in or not, can view a restaurant's details.
+     * @deny (create) No user can create a new restaurant document.
+     * @principle Public read access for discovery, with writes disabled as a secure default.
+     */
+    match /restaurants/{restaurantId} {
+      allow get: if true;
+      allow list: if true;
+      // CRITICAL: Cannot implement owner-only writes. The 'Restaurant' entity is missing an 'ownerId' or 'adminId' field.
+      allow create: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow update: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+    }
+
+    /**
+     * @description Stores public menu items for a restaurant. Anyone can read, no one can write.
+     * @path /restaurants/{restaurantId}/menuItems/{menuItemId}
+     * @allow (list) Any user, signed in or not, can list the menu items for a restaurant.
+     * @deny (create) No user can add a new menu item.
+     * @principle Public read access for discovery, with writes disabled as a secure default.
+     */
+    match /restaurants/{restaurantId}/menuItems/{menuItemId} {
+      allow get: if true;
+      allow list: if true;
+      // CRITICAL: Cannot implement owner-only writes. The parent 'Restaurant' entity is missing an 'ownerId' or 'adminId' field.
+      allow create: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow update: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+    }
+
+    /**
+     * @description Stores public table information for a restaurant. Anyone can read, no one can write.
+     * @path /restaurants/{restaurantId}/tables/{tableId}
+     * @allow (list) Any user, signed in or not, can list the tables for a restaurant.
+     * @deny (create) No user can add a new table.
+     * @principle Public read access for discovery, with writes disabled as a secure default.
+     */
+    match /restaurants/{restaurantId}/tables/{tableId} {
+      allow get: if true;
+      allow list: if true;
+      // CRITICAL: Cannot implement owner-only writes. The parent 'Restaurant' entity is missing an 'ownerId' or 'adminId' field.
+      allow create: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow update: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+    }
+
+    /**
+     * @description Stores private user profile data.
+     * @path /users/{userId}
+     * @allow (create) A new user (auth.uid='user_abc') can create their own profile at '/users/user_abc'.
+     * @deny (get) A user (auth.uid='user_xyz') cannot read the profile of another user at '/users/user_abc'.
+     * @deny (list) No user can list all documents in the '/users' collection.
+     * @principle Restricts access to a user's own data tree and prevents user enumeration.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId) && hasValidUserDataOnCreate(userId);
+      allow update: if isExistingOwner(userId) && hasImmutableUserDataOnUpdate();
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Stores private reservation data for a specific user.
+     * @path /users/{userId}/reservations/{reservationId}
+     * @allow (create) A user (auth.uid='user_abc') can create a reservation in their own subcollection.
+     * @deny (list) A user (auth.uid='user_xyz') cannot list reservations for another user ('user_abc').
+     * @principle Enforces strict document ownership within a user's private data tree.
+     */
+    match /users/{userId}/reservations/{reservationId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && hasValidReservationDataOnCreate(userId);
+      allow update: if isExistingOwner(userId) && hasImmutableReservationDataOnUpdate();
+      allow delete: if isExistingOwner(userId);
+    }
+  }
+}
