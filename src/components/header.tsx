@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Utensils } from 'lucide-react';
+import { Button } from './ui/button';
 
 export default function Header() {
   return (
@@ -13,7 +14,12 @@ export default function Header() {
             <Utensils className="h-7 w-7" />
             <span>ResRVI</span>
           </Link>
-          {/* Future navigation items can go here */}
+          
+          <nav>
+            <Button asChild variant="outline">
+              <Link href="/login">Se connecter</Link>
+            </Button>
+          </nav>
         </div>
       </div>
     </header>
