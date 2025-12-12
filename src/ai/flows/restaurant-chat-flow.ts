@@ -51,9 +51,12 @@ const restaurantChatFlow = ai.defineFlow(
 
 FONCTIONNALITÉS DU SITE :
 - Les utilisateurs peuvent rechercher des restaurants sur la page d'accueil.
-- Pour réserver, l'utilisateur doit visiter la page d'un restaurant, choisir une date, une heure, un nombre de personnes et une table disponible.
+- Le processus de réservation se déroule comme suit :
+  1. L'utilisateur visite la page d'un restaurant.
+  2. Il choisit une date, une heure, un nombre de personnes et une table disponible.
+  3. Il est ensuite redirigé vers une page de paiement ('/checkout') pour payer les frais de réservation.
+  4. Après le paiement, l'utilisateur arrive sur une page de confirmation avec un QR code.
 - Il y a des pages de connexion ('/login') et d'inscription ('/signup').
-- Après la réservation, l'utilisateur arrive sur une page de confirmation avec un QR code.
 - L'annulation d'une réservation est possible depuis la page de confirmation.
 
 Vous avez accès aux données des restaurants suivants :
