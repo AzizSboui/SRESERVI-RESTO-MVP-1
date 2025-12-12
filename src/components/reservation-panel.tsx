@@ -19,10 +19,11 @@ import {
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import type { Table } from '@/lib/types';
-import { Calendar as CalendarIcon, Clock, Users, Armchair } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Users, Armchair, AlertCircle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { format, getDaysInMonth, getYear, getMonth, getDate, set } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 
 interface ReservationPanelProps {
   tables: Table[];
@@ -208,9 +209,13 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
               </Button>
             ))}
             {partySize && availableTables.length === 0 && (
-              <p className="col-span-3 text-sm text-muted-foreground p-4 text-center border rounded-md">
-                Aucune table disponible pour ce nombre de personnes.
-              </p>
+              <Alert variant="destructive" className="col-span-3">
+                 <AlertCircle className="h-4 w-4" />
+                 <AlertTitle>Aucune table disponible</AlertTitle>
+                 <AlertDescription>
+                   Aucune table n'est disponible pour la taille de votre groupe. Veuillez essayer un autre nombre de personnes.
+                 </AlertDescription>
+               </Alert>
             )}
           </div>
         </div>
@@ -219,6 +224,7 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
         <Button
           onClick={handleReservation}
           className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+          disabled={!date || !time || !partySize || !selectedTable}
         >
           Voir le résumé
         </Button>
