@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -10,11 +11,25 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { CheckCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useToast } from '@/hooks/use-toast';
 
 export default function ConfirmationPage() {
+  const router = useRouter();
+  const { toast } = useToast();
   const [reservationId, setReservationId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -23,6 +38,14 @@ export default function ConfirmationPage() {
       `DINE-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
     );
   }, []);
+
+  const handleCancel = () => {
+    toast({
+      title: 'Réservation annulée',
+      description: 'Votre réservation a été annulée avec succès.',
+    });
+    router.push('/');
+  };
 
   if (!reservationId) {
     return (
@@ -78,10 +101,31 @@ export default function ConfirmationPage() {
             Un e-mail de confirmation a été envoyé à votre adresse. Nous avons hâte de vous voir !
           </p>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex-col sm:flex-row gap-2">
           <Button asChild className="w-full">
             <Link href="/">Retour à l'accueil</Link>
           </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="outline" className="w-full">
+                Annuler la réservation
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Cette action est irréversible et annulera votre réservation de table.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Retour</AlertDialogCancel>
+                <AlertDialogAction onClick={handleCancel}>
+                  Confirmer l'annulation
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </CardFooter>
       </Card>
     </div>
