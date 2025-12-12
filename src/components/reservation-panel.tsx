@@ -21,13 +21,23 @@ import { Label } from '@/components/ui/label';
 import type { Table } from '@/lib/types';
 import { Calendar as CalendarIcon, Clock, Users, Armchair, AlertCircle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
-import { format, getDaysInMonth, getYear, getMonth, getDate, set } from 'date-fns';
+import { format, getDaysInMonth, getYear, getMonth, set } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 
 interface ReservationPanelProps {
   tables: Table[];
 }
+
+// SIMULATION: Fausse liste de réservations existantes.
+// Dans une vraie application, ceci viendrait d'une base de données.
+const existingReservations = [
+    { tableId: 't2-2', time: '19:00' },
+    { tableId: 't3-3', time: '20:00' },
+    { tableId: 't1-4', time: '19:30' },
+    { tableId: 't4-1', time: '20:30' },
+    { tableId: 't4-2', time: '20:30' },
+];
 
 export function ReservationPanel({ tables }: ReservationPanelProps) {
   const router = useRouter();
@@ -80,10 +90,36 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
     setSelectedTable(null); // Reset table selection when party size changes
   };
 
-  const availableTables = tables.filter(
-    (table) =>
-      table.isAvailable && (!partySize || table.seats >= parseInt(partySize))
-  );
+  const handleTimeChange = (value: string) => {
+    setTime(value);
+    setSelectedTable(null); // Reset table selection when time changes
+  };
+
+  const availableTables = useMemo(() => {
+    // 1. Filtre de base : tables structurellement disponibles
+    const generallyAvailableTables = tables.filter(table => table.isAvailable);
+
+    // 2. Si aucune heure n'est choisie, on ne peut pas filtrer plus
+    if (!time) {
+        return generallyAvailableTables;
+    }
+    
+    // 3. Filtre les tables qui ne sont PAS dans les réservations existantes pour l'heure choisie
+    return generallyAvailableTables.filter(table => {
+        const isReserved = existingReservations.some(
+            reservation => reservation.tableId === table.id && reservation.time === time
+        );
+        return !isReserved; // Retourne true si la table n'est PAS réservée
+    });
+  }, [tables, time]);
+
+  const filteredTablesForPartySize = useMemo(() => {
+    if (!partySize) {
+      return availableTables;
+    }
+    return availableTables.filter(table => table.seats >= parseInt(partySize));
+  }, [availableTables, partySize]);
+
 
   const handleReservation = () => {
     if (!date || !time || !partySize || !selectedTable) {
@@ -155,7 +191,7 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
             <Label htmlFor="time" className="flex items-center gap-2">
               <Clock /> Heure
             </Label>
-            <Select onValueChange={setTime} value={time}>
+            <Select onValueChange={handleTimeChange} value={time}>
               <SelectTrigger id="time">
                 <SelectValue placeholder="Choisir l'heure" />
               </SelectTrigger>
@@ -194,7 +230,7 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
             <Armchair /> Choisir une table
           </Label>
           <div className="grid grid-cols-3 gap-2">
-            {availableTables.map((table) => (
+            {filteredTablesForPartySize.map((table) => (
               <Button
                 key={table.id}
                 variant={selectedTable?.id === table.id ? 'default' : 'outline'}
@@ -208,12 +244,12 @@ export function ReservationPanel({ tables }: ReservationPanelProps) {
                 </span>
               </Button>
             ))}
-            {partySize && availableTables.length === 0 && (
+            {time && partySize && filteredTablesForPartySize.length === 0 && (
               <Alert variant="destructive" className="col-span-3">
                  <AlertCircle className="h-4 w-4" />
-                 <AlertTitle>Aucune table disponible</AlertTitle>
+                 <AlertTitle>Complet ou indisponible</AlertTitle>
                  <AlertDescription>
-                   Aucune table n'est disponible pour la taille de votre groupe. Veuillez essayer un autre nombre de personnes.
+                   Aucune table n'est disponible pour cette heure et cette taille de groupe. Veuillez essayer un autre créneau ou un autre nombre de personnes.
                  </AlertDescription>
                </Alert>
             )}
